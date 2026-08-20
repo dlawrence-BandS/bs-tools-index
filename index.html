@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B&S Digital &amp; eCommerce — Tool Set Index</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper:#EDECE5;
+    --paper-line:#D6D4C8;
+    --ink:#1E2422;
+    --ink-soft:#5B6360;
+    --blue:#2C4A72;
+    --blue-soft:#7C93AC;
+    --oak:#8A6A38;
+    --live:#4B7A58;
+    --archived:#9A9284;
+    --card-bg:#F6F5F0;
+    --radius:2px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body{
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding: 28px 24px 80px;
+  }
+
+  /* ---- title block, styled like a drawing-set cover sheet ---- */
+  .titleblock{
+    border:1.5px solid var(--ink);
+    background:var(--card-bg);
+    display:grid;
+    grid-template-columns: 1.6fr 1fr;
+    margin-bottom:40px;
+  }
+  .titleblock-main{
+    padding:28px 30px 24px;
+    border-right:1.5px solid var(--ink);
+  }
+  .titleblock-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    color:var(--blue);
+    text-transform:uppercase;
+    margin:0 0 10px;
+  }
+  .titleblock-main h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(28px, 4vw, 40px);
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0 0 12px;
+    line-height:1.1;
+  }
+  .titleblock-main p{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    line-height:1.55;
+    max-width:520px;
+    margin:0;
+  }
+  .titleblock-meta{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .tb-cell{
+    padding:14px 18px;
+    border-bottom:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .tb-cell:nth-child(odd){ border-right:1px solid var(--paper-line); }
+  .tb-cell .label{
+    display:block;
+    font-size:9.5px;
+    letter-spacing:.1em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .tb-cell .value{ font-size:13px; color:var(--ink); }
+
+  /* ---- section (sheet) headers ---- */
+  .sheet{ margin-bottom:44px; }
+  .sheet-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:8px;
+    margin-bottom:18px;
+  }
+  .sheet-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--blue);
+    background:rgba(44,74,114,0.08);
+    padding:2px 8px;
+    border:1px solid var(--blue-soft);
+    border-radius:var(--radius);
+  }
+  .sheet-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+  }
+  .sheet-head .count{
+    margin-left:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:14px;
+  }
+
+  /* ---- card ---- */
+  .card{
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--ink);
+    padding:16px 16px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-1px; right:-1px;
+    width:14px; height:14px;
+    background:
+      linear-gradient(135deg, transparent 50%, var(--paper) 50%);
+    border-left:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+  }
+  .card.is-live:hover{
+    transform:translateY(-2px);
+    box-shadow:3px 4px 0 rgba(30,36,34,0.18);
+  }
+  .card.is-archived{ opacity:.62; }
+
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .card-id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    white-space:nowrap;
+  }
+  .status .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--live);
+    flex-shrink:0;
+  }
+  .status.archived .dot{ background:var(--archived); }
+  .status.archived{ color:var(--archived); }
+
+  .card h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:16px;
+    font-weight:600;
+    margin:0;
+    line-height:1.25;
+  }
+  .card .repo{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--oak);
+  }
+  .card p.desc{
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0;
+    flex-grow:1;
+  }
+  .card .flag{
+    font-size:11.5px;
+    color:var(--blue);
+    background:rgba(44,74,114,0.07);
+    border-left:2px solid var(--blue);
+    padding:6px 8px;
+    line-height:1.4;
+  }
+  .card-open{
+    margin-top:4px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border-top:1px dashed var(--paper-line);
+    padding-top:9px;
+  }
+  .card-open .arrow{ transition:transform .12s ease; }
+  .card:hover .card-open .arrow{ transform:translateX(3px); }
+  .card-open.disabled{ color:var(--archived); }
+
+  footer{
+    margin-top:20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+
+  @media (max-width:640px){
+    .titleblock{ grid-template-columns:1fr; }
+    .titleblock-main{ border-right:none; border-bottom:1.5px solid var(--ink); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="titleblock">
+    <div class="titleblock-main">
+      <p class="titleblock-eyebrow">Barker &amp; Stonehouse — Digital &amp; eCommerce</p>
+      <h1>Tool Set Index</h1>
+      <p>Every dashboard, scraper and tracker built to date, in one place. Each sheet groups tools by what they're for — click through to open the live page. GA4 &amp; BigQuery based unless noted.</p>
+    </div>
+    <div class="titleblock-meta">
+      <div class="tb-cell"><span class="label">Drawn by</span><span class="value">D. Lawrence</span></div>
+      <div class="tb-cell"><span class="label">Tools</span><span class="value">17</span></div>
+      <div class="tb-cell"><span class="label">Host</span><span class="value">GitHub Pages</span></div>
+      <div class="tb-cell"><span class="label">Rev</span><span class="value">2026.08</span></div>
+    </div>
+  </div>
+
+  <!-- A — SALES & PRODUCT -->
+  <div class="sheet">
+    <div class="sheet-head">
+      <span class="sheet-num">A</span>
+      <h2>Sales &amp; Product</h2>
+      <span class="count">5 tools</span>
+    </div>
+    <div class="grid">
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">A1</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Product Dashboard</h3>
+        <span class="repo">bs-product-dashboard</span>
+        <p class="desc">Sales cut by product attribute — fabric, colour, seat count and more, from a cleaner sofa_config field. Revenue, units and item views side by side.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-product-dashboard/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">A2</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Category Report</h3>
+        <span class="repo">bs-category-report</span>
+        <p class="desc">Same sales data rolled up to category level instead of product attribute — for a top-down view of the range.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-category-report/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">A3</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Brand Performance</h3>
+        <span class="repo">bs-brands</span>
+        <p class="desc">Sales performance by brand across the range — who's pulling their weight, who isn't.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-brands/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">A4</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Brand Price Comparison</h3>
+        <span class="repo">brand-price-dashboard</span>
+        <p class="desc">Our pricing against named competitor brands, product by product.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/brand-price-dashboard/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-archived">
+        <div class="card-top"><span class="card-id">A5</span><span class="status archived"><span class="dot"></span>Archived</span></div>
+        <h3>Brand Price Comparison (old)</h3>
+        <span class="repo">brand-price-dashboard-old</span>
+        <p class="desc">Superseded by A4. Kept live for now — flag if it's safe to pull down.</p>
+        <a class="card-open disabled" href="https://dlawrence-bands.github.io/brand-price-dashboard-old/" target="_blank" rel="noopener"><span class="arrow">→</span> Open anyway</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- B — COMPETITIVE INTELLIGENCE & PRICING -->
+  <div class="sheet">
+    <div class="sheet-head">
+      <span class="sheet-num">B</span>
+      <h2>Competitive Intelligence &amp; Delivery</h2>
+      <span class="count">2 tools</span>
+    </div>
+    <div class="grid">
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">B1</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Competitor Intelligence</h3>
+        <span class="repo">bs-intelligence</span>
+        <p class="desc">Price scraper across 52 tracked listings (Fishpools, Smiths the Rink, Heals, Housing Units, My Next Mattress and more), with an Opportunities tab and PPT/CSV export.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-intelligence/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">B2</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Delivery Cost Impact</h3>
+        <span class="repo">delivery-analysis</span>
+        <p class="desc">Tracking the effect of the flat £15 dining chair delivery rate (from 30 June) on conversion.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/delivery-analysis/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- C — SEO & SEARCH -->
+  <div class="sheet">
+    <div class="sheet-head">
+      <span class="sheet-num">C</span>
+      <h2>SEO &amp; Search</h2>
+      <span class="count">2 tools</span>
+    </div>
+    <div class="grid">
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">C1</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Search Console</h3>
+        <span class="repo">bs-search</span>
+        <p class="desc">Organic search performance with a 16-month backfill — clicks, impressions, position, by page and query.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-search/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">C2</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Ercol Performance</h3>
+        <span class="repo">ercol-performance</span>
+        <p class="desc">SEO performance dashboard scoped specifically to the Ercol brand pages.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/ercol-performance/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- D — SOCIAL, CRM & AI -->
+  <div class="sheet">
+    <div class="sheet-head">
+      <span class="sheet-num">D</span>
+      <h2>Social, CRM &amp; AI Visibility</h2>
+      <span class="count">5 tools</span>
+    </div>
+    <div class="grid">
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">D1</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Organic Social</h3>
+        <span class="repo">bs-organic</span>
+        <p class="desc">Organic social performance across channels.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-organic/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">D2</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Influencer Performance</h3>
+        <span class="repo">bs-influence</span>
+        <p class="desc">Paid &amp; organic influencer activity — reach, engagement, attributed sales.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-influence/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">D3</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Ometria CRM</h3>
+        <span class="repo">bs-ometria-dashboard</span>
+        <p class="desc">CRM/email analytics built on the Ometria export — lifecycle stage and value-based customer segments.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-ometria-dashboard/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">D4</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>AI Visibility</h3>
+        <span class="repo">bs-ai-visibility</span>
+        <p class="desc">Runs ~100 prompts a week through ChatGPT, Claude and Gemini to track how often B&amp;S gets mentioned, share of voice vs competitors, and sentiment.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-ai-visibility/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">D5</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>LLM Traffic</h3>
+        <span class="repo">bs-llm</span>
+        <p class="desc">Traffic and revenue by LLM engine (ChatGPT, Perplexity etc) — a growth area for the business, so this is the one to watch for whether it's actually paying off.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-llm/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- E — CAMPAIGNS & PLANNING -->
+  <div class="sheet">
+    <div class="sheet-head">
+      <span class="sheet-num">E</span>
+      <h2>Campaigns &amp; Planning</h2>
+      <span class="count">3 tools</span>
+    </div>
+    <div class="grid">
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">E1</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>TV &amp; Location Performance</h3>
+        <span class="repo">bs-location</span>
+        <p class="desc">Regional impact of TV activity — 2025 linear ITV strategy vs 2026 addressable, by store catchment.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-location/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">E2</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Marketing Calendar</h3>
+        <span class="repo">marketing-calendar</span>
+        <p class="desc">Shared team calendar of web &amp; marketing activity, with sale/highlight events. Sheets-backed rather than BigQuery.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/marketing-calendar/" target="_blank" rel="noopener"><span class="arrow">→</span> Open calendar</a>
+      </div>
+
+      <div class="card is-live">
+        <div class="card-top"><span class="card-id">E3</span><span class="status"><span class="dot"></span>Live</span></div>
+        <h3>Revenue Tracker</h3>
+        <span class="repo">bs-revenue-tracker</span>
+        <p class="desc">Tracks the total business number against Peter's targets week by week, with a year-end forecast and a view of how GA4's online numbers compare to the overall business figure.</p>
+        <a class="card-open" href="https://dlawrence-bands.github.io/bs-revenue-tracker/" target="_blank" rel="noopener"><span class="arrow">→</span> Open dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>Barker &amp; Stonehouse · Digital &amp; eCommerce · all tools built and maintained by D. Lawrence</footer>
+
+</div>
+</body>
+</html>
